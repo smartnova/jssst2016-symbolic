@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# (cd paper; mvim .)
+
+export TEXINPUTS=:tex//:jssst//:images//
+export BIBINPUTS="`pwd`/../2016.sigpx:$BIBINPUTS"
+export BSTINPUTS=`pwd`/jssst
+echo "BIBINPUTS=$BIBINPUTS"
+echo "BSTINPUTS=$BSTINPUTS"
+latexmk -gg -r "$TEXMKCONF/build.platex" tex/paper.tex
