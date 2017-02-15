@@ -1,0 +1,38 @@
+\section {はじめに}
+
+ソフトウェアのドキュメント化は頭の痛い問題である．\cite{clements-2010-documenting-software-architectures:-views-and-beyond,boswell-2011-the-art-of-readable-code:-simple-and-practical-techniques}ソフトウェアのドキュメントはソフトウェアの保守に不可欠な情報を提供しており，ソフトウェアの進化に伴なって，適切に更新されることが期待されている．このことは，管理者にもエンジニアにも等しく理解されている．ところが，大規模なソフトウェア開発において膨大な書類の山の全体構成を十分に把握しきれない例や，中小規模のソフトウェア開発においてドキュメント化に資する余裕がないことを理由にドキュメント化を諦めてしまう例も報告されている．%
+\cite {%
+  forward-2002-the-relevance-of-software-documentation-tools-and-technologies:}
+
+ひとくちにソフトウェアのドキュメントといっても，開発行程の管理のためのもの，開発行程の各段階ごとのもの，そしてソフトウェアに付随するAPIドキュメント等のように外部に公開されるものが存在する．本稿では，特にAPIドキュメントについて論じる．
+
+ソフトウェアのAPIドキュメントには，API関数の役割，引数や返り値とそれらの役割，副作用や例外発生の有無などのような\emph {インタフェイス記述}とともに，API関数の呼び出し方を示した例題や実行例の記述が含まれる．90年代後半から，プログラムコードの記述とそれに付随する定型書式のプログラムコメントからインタフェイス記述を自動生成する技術が一般化し，インタフェイス記述の負担は軽減され，インタフェイス記述とプログラムコードの一貫性の問題も緩和された．%
+\cite {%
+  kramer-1999-api-documentation-from-source-code-comments:,%
+  hoffman-2003-api-documentation-with-executable-examples,%
+  aguiar-2005-wikiwiki-weaving-heterogeneous-software-artifacts,%
+  normark-2009-the-vicinity-of-program-documentation-tools,%
+  rust-lang.org-2016-the-rust-programming-language-chapter-5.4-documentation}
+
+一方で，インタフェイス記述に含まれるAPI関数の振舞いが，実際のソフトウェアの動作と一致しない場合が多いことがZhongらによって指摘されている\cite{zhong-2013-detecting-api-documentation-errors}．%
+%Zhongらは，自然言語を交えた技術を自動テスティング技術と組み合わせることで，APIドキュメントが含む実行例の記述の誤りを1,000以上も発見することができた．
+ソフトウェア開発者のなかには，ソフトウェアドキュメントの完全性を諦め，ドキュメントにもライフサイクルがあり，過去の古い記述も受容すべきだと主張するものもいる (\cite{forward-2002-the-relevance-of-software-documentation-tools-and-technologies:}, Section 3.3: Evolving Documentation Needs)．その反面，近年のテスト駆動開発の流れを汲んで，ソフトウェアの動作記述に自然言語を用いるよりも，テストケースを流用する傾向がある．%
+\cite {%
+  hoffman-2003-api-documentation-with-executable-examples,%
+  stylos-2009-jadeite:-improving-api-documentation-using-usage,%
+  kr:amer-2016-using-runtime-traces-to-improve-documentation}
+
+これらインタフェイス記述はAPIを利用するプログラマが参照する情報であるが，これとは別にAPIの実装方式を文書化した\emph {内部記述}の存在はAPIを継続的に保守する目的で重要である．今日のようにオープンソースソフトウェア開発が定着した時代にあって，APIの利用者とAPIの開発者の垣根は低くなり，プログラムにはAPIの内部記述が記述することが望まれている．
+
+本稿が扱うのは，このようなAPIドキュメントの内部記述，それも特に記述が困難な内部記述の問題である．本研究のひとつの目的は，APIドキュメントの内部記述を困難にしている要因を明らかにすることである．ソフトウェアの問題領域における論理がプログラムを記述するプログラミング言語の細かい形式的論理よりも遥かに高い抽象度を有していることがある．このため，問題領域における記述とそれをプログラミング言語に翻訳したものの間に記述面で大きな差を生んでしまう点である．
+
+このような論理的な抽象度の違いは，ドキュメント記述においても大きな問題を産む．なぜなら，APIドキュメントの内部記述の役割のひとつは，これらの抽象度のギャップを埋めることにあるからだ．
+
+本稿では，ここで指摘した問題一般に挑むかわりに，その特殊な問題領域として\emph {数学的知識を背景とする問題領域}を取り上げ，問題の所在を分析し，そこで見極めた諸問題を数式処理システムを活用することで解決を提案する．
+
+本研究の貢献は，二つある．ひとつは数学的知識を背景とする問題領域についてのAPIドキュメントの内部記述を困難にしている３つの要因を明らかにした点である．(1)数学的知識の記述に用いられている数式とプログラミング言語の抽象度の違い，(2)数学的知識の表現であるところの数式を効率的にプログラムコードに変換できないこと，そして(3)数式を用いたドキュメント記述が困難であること．もうひとつの貢献は，これらの困難について数式処理システムを用いることによりエレガントに解決できることを示した点である．
+
+これ以後の本稿の構成は以下のとおりである．\ref {sec: problem}節では，上述の問題の具体的かつ典型的な例を掲げ，技術的な課題を示す．\ref {sec: solution}節では，数学的知識を背景とした領域の課題について，数式処理システムの数式変換，コード生成，そして数式記述生成の機能を上手に活用することで\ref {sec: problem}節の例をきれいに解決できることを示し，さらにここで提案するアプローチがこの一例にとどまらず発展的な課題においても有効であることを示す．\ref {sec: discussion}節では議論を深め，\ref {sec: summary}節で本稿をまとめるとともに今後の研究の方向性を示す．
+
+%\cite {aguiar-2005-wikiwiki-weaving-heterogeneous-software-artifacts}
+% Good software documents are often \emph {heterogeneous}, i.e., they combine \emph {different kinds of contents (text, code, models, images) gathered from \emph {separate software artifacts}, combination usually difficult to maintain as the system evolves over time, considering the source code, models and documents are typically produces and maintained separately in multiple sources using different environments and editors.

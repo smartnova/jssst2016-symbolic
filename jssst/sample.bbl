@@ -1,0 +1,23 @@
+\begin{thebibliography}{1}
+
+\bibitem{LS86}
+Lanin, V. and Shasha, D.: A Symmetric Concurrent B-Tree Algorithm,  {\it Proc.
+  1986 Fall Joint Computer Conference}, {IEEE}, 1986, pp.~ 380--389.
+
+\bibitem{S89}
+Shapiro, E.: The Family of Concurrent Logic Programming Languages, {\it {ACM}
+  Computing Surveys}, Vol.~21, No.~3(1989), pp.~413--510.
+
+\bibitem{ST85}
+Sleator, D.~D. and Tarjan, R.~E.: Self-Adjusting Binary Search Trees, {\it {J.
+  ACM}}, Vol.~32, No.~3(1985), pp.~652--686.
+
+\bibitem{T85}
+Tarjan, R.~E.: Amortized Computational Complexity, {\it {SIAM} J. Alg. Disc.
+  Math.}, Vol.~6, No.~2(1990), pp.~306--318.
+
+\bibitem{W90}
+和田久美子: スプレイ木の並列データ探索,  {\it Proc. KL1 Programming Workshop
+  '90}, Tokyo, {ICOT}, 1990, pp.~ 42--49.
+
+\end{thebibliography}

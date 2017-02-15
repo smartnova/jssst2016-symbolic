@@ -1,0 +1,86 @@
+\section {問題の分析}
+\label {sec: problem}
+
+本節では，小さな例をもとに本稿が対象としてる問題点を明らかにする．ここで扱う例題は「平方根を計算するプログラムとそのドキュメントを執筆すること」である．平方根の計算は，プログラミングの初学者が最初の数値計算の演習にでも扱うような簡単な内容ではある．しかし，数学的知識を背景とする問題領域のプログラミングの問題点のエッセンスを含んでおり，そのエレガントな解決は自明ではない．
+
+\begin{figure}[tb]
+
+  \rule {\linewidth} {1pt}
+  \begin {subfigure}{.99\linewidth}
+    \bgroup\small \verbatiminput {code/sqrt0.py}\egroup
+
+    \subcaption {平方根を計算するプログラム}
+    \label {sqrt0: code}
+  \end {subfigure}
+
+  \smallskip
+  \rule {\linewidth} {.2pt}
+  \smallskip
+
+  \begin {subfigure}{.99\linewidth}
+    \bgroup \color {darkblue} \input {code/sqrt0} \egroup\\
+    \subcaption {図\subref {sqrt0: code}の内部ドキュメント．図\ref {fig: square root document description}のドキュメント記述から生成されたもの．}
+    \label {sqrt0: documentation}
+  \end {subfigure}
+
+  \smallskip
+  \rule {\linewidth} {.2pt}
+
+  \caption{数学的知識を背景とする領域における問題の例として，平方根の計算}
+  \label {fig: square root}
+  \rule {\linewidth} {1pt}
+\end{figure}
+
+正数$a$の平方根は実変数$x$の方程式$x^2 - a = 0$に対する非負根であり，この求解には普通Newton-Raphson法が用いられる．Pythonで記述した平方根を求めるプログラム例が図\ref {fig: square root}\subref {sqrt0: code}であり，その内部ドキュメントが図\ref {fig: square root}\subref {sqrt0: documentation}である．このドキュメントを作成するために，MathJax拡張を施したMarkdown形式のドキュメントを記述したものが図\ref {fig: square root document description}である．\footnote {この例はpLaTeXの記述にしか見えないかもしれないが，この研究ではJupyter Notebookと呼ばれるPythonプログラムとMarkdownを混在できる環境を用いている．\cite{jupyter-2016-notebooks}}
+
+\begin {figure}[tb]
+  \rule {\linewidth} {1pt}
+  {\color {darkblue} \small \verbatiminput{code/sqrt0.tex}}
+
+  \caption {図\ref {fig: square root}\subref {sqrt0: code}に示されたプログラムコードの内部ドキュメント記述．この記述から図\ref {sqrt0: documentation}のドキュメントが生成される．}
+  \label {fig: square root document description}
+  \rule {\linewidth} {1pt}
+\end {figure}
+
+さて，ここで図\ref {fig: square root}\subref {sqrt0: code}と図\ref {fig: square root document description}を見比べるといくつかの問題が見えてくる．
+
+\subsection  {平方根の定義式はどこに？}
+\label {ssec: definition}
+
+すでに「正数$a$の平方根は実数変数$x$の方程式$x^2 - a = 0$に対する非負根」と述べたが，図\ref {fig: square root}\subref {sqrt0: code}を眺めても$x^2 - a$なる式は存在しない．本当にこのプログラムは平方根を計算するのだろうか．
+
+一方，変数$x$と定数$a$を含む$(x + a / x) / 2$なる式がある．本当にこの定義は正しいのだろうか．
+
+中等数学を学んだ辛抱強いエンジニアが図\ref {fig: square root}\subref {sqrt0: code}を眺めれば，この式が確かに$x^2 - a = 0$と関連した正しい式であることが理解できるかもしれない．しかし，このドキュメントや参考書，あるいはWikipediaの類いの助けなしに，このプログラムを理解し，その正しさを把握することは困難だろう．
+
+\subsection  {ドキュメント記述の複雑性}
+\label {ssec: complexity}
+
+図\ref {fig: square root}\subref {sqrt0: documentation}のドキュメントを書くのはかなりやっかいな作業である．図\ref {fig: square root}\subref {sqrt0: documentation}の記述がこのドキュメントのもととなったドキュメント記述である．実のところ，このドキュメント記述の方が図\ref {fig: square root}\subref {sqrt0: code}のプログラム記述よりも遥かに複雑で作業時間を要する．
+
+本稿が問題にするような数学的知識を背景とするAPI関数の内部ドキュメントの記述については，そもそもドキュメントの記述自体が困難なためにドキュメントには関連文献の参照情報を提示するのみに留めている例も多い．
+
+\subsection {冗長性}
+\label {ssec: redundancy}
+
+プログラムコードの冗長性は，プログラムコード中に同一，あるいは類似した字句が繰り返し出現することを指す．冗長性はソフトウェアの品質，可読性，保守性を左右する重要な指標である．ここで検討している課題に関して，冗長性について着目すると深刻な問題があることに気づかされる．
+
+まず，プログラムとドキュメントのあいだの冗長性として，プログラム中の\verb|(x + a / x) / 2|という記述と，それに類似したドキュメント記述として\verb|\frac {x + a / x} 2|が見つかる．プログラムコードの冗長性に比べると，ここで論じる冗長性は質が悪い．なぜなら，ここで指摘した例は，意味的には同じものをPythonコードとLaTeX風の数式記述として表現しており，通常の冗長性の範疇から逸脱したものだからだ．
+
+プログラムとドキュメントのあいだに冗長性があることはやっかいな問題である．なぜなら，その冗長な記述の存在こそが，プログラムとドキュメントの一貫性を示唆しているからだ．つまり，プログラムの更新に伴なって適切にドキュメントを更新しなくてはならない．
+
+\begin {table}
+\caption {ドキュメント記述中の冗長性}
+\label {tbl: ドキュメント記述中の冗長性}
+
+\begin {center}
+\begin {tabular}{lr} \hline
+\textbf {冗長な数式の記述} & \textbf {出現回数} \\ \hline
+\verb|x^2 - a| & 3 \\
+\verb|x_n - f(x_n) / f'(x_n)| & 2 \\
+\hline
+\end {tabular}
+\end {center}
+\end {table}
+
+ドキュメント記述のなかにもいくつかの冗長な記述を見ることができる（表\ref {tbl: ドキュメント記述中の冗長性}）．この種の冗長性は，ドキュメントの記述に要する労力を増加している．

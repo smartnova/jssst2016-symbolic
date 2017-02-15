@@ -1,0 +1,30 @@
+% 以下の3行は変更しないこと．
+\documentclass[T]{compsoft}
+\taikai{2016}
+\pagestyle {empty}
+
+\usepackage {amsmath}
+
+\usepackage [dvipdfmx] {graphicx, color}
+\definecolor{darkred}{rgb}{0.7,0,0}
+\definecolor{darkblue}{rgb}{0,0,.7}
+
+\usepackage {verbatim}
+
+\usepackage {subcaption}
+\captionsetup {subrefformat=parens}
+\captionsetup {compatibility=false}
+
+\begin {document}
+
+\input {0-cover}
+\input {1-introduction}
+\input {2-problem}
+\input {3-symbolic}
+\input {4-discussion}
+\input {5-summary}
+
+\bibliographystyle {jssst}
+\bibliography {references,library}
+
+\end {document}
